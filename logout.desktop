@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Logout
+Exec=/usr/bin/logout
+MimeType=application/octet-stream
+Icon=/usr/share/logout/logout.png
+Categories=System;
+

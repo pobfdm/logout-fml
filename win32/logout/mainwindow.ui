@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>350</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>350</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>400</width>
+    <height>350</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Logout </string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/logout.png</normaloff>:/icons/logout.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QPushButton" name="cmdHalt">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>80</y>
+      <width>161</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Halt</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="cmdReboot">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>120</y>
+      <width>161</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reboot</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="cmdCancel">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>250</y>
+      <width>101</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cancel</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="cmdCloseX">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>160</y>
+      <width>161</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Close session</string>
+    </property>
+   </widget>
+   <widget class="QDateTimeEdit" name="dateTimeEdit">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>123</x>
+      <y>40</y>
+      <width>161</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="displayFormat">
+     <string>dd/MM/yyyy HH:mm</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkDateTime">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>20</y>
+      <width>251</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Enable date time</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="txtCustom">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>200</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="cmdCustom">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>200</y>
+      <width>41</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Run</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>400</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuInfo">
+    <property name="title">
+     <string>Info</string>
+    </property>
+    <addaction name="actionAuthors"/>
+   </widget>
+   <addaction name="menuInfo"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionAuthors">
+   <property name="text">
+    <string>Authors</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>MainWindow</sender>
+   <signal>timeout()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>checkMyDate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>199</x>
+     <y>174</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>199</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <signal>timeout()</signal>
+  <slot>checkMyDate()</slot>
+ </slots>
+</ui>
