@@ -32,5 +32,8 @@ to uninstall:
 
 
 
-Note:
+Customize the commands:
 If you want customize the commands you can edit ~/.config/logout/settings.ini
+
+Windows users:
+Windows users can find the executable in the folder win32/bin/logout.exe
