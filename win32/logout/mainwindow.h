@@ -8,6 +8,8 @@
 #include <QMainWindow>
 #include <QSettings>
 
+#include <QSystemTrayIcon>
+
 namespace Ui {
 class MainWindow;
 }
@@ -38,6 +40,7 @@ private slots:
     void on_checkDateTime_stateChanged();
 
     void disableGui();
+    void toggleMainWindow();
 
     void halt();
     void reboot();
@@ -51,10 +54,24 @@ private slots:
 
     void on_actionAuthors_triggered();
 
+    void on_cmdHaltAfterAllDownloads_clicked();
+
+    void on_cmdDownloadFolder_clicked();
+
+    void on_cmdAfterDownloadFile_clicked();
+
+    void on_cmdHaltAfterSingleDownload_clicked();
+
+    void checkAllDownloadsEnds();
+    void checkSingleDownloadEnd();
+    bool checkIfDirOk();
+
 private:
     QString operation, settingsFile;
-    QTimer *timer ;
+    QTimer *timer, *timerDownload ;
     Ui::MainWindow *ui;
+    QSystemTrayIcon *trayIcon ;
+
 };
 
 #endif // MAINWINDOW_H

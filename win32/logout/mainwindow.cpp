@@ -6,6 +6,9 @@
 #include <QSettings>
 #include <QProcess>
 #include <QMessageBox>
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QStringList>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -14,7 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    //this->setWindowFlags( Qt::CustomizeWindowHint );
+    //Show first tab
+    ui->tabWidget->setCurrentIndex(0);
 
     //Grab Current date and time
     ui->dateTimeEdit->setDate(QDate::currentDate());
@@ -33,17 +37,40 @@ MainWindow::MainWindow(QWidget *parent) :
         settings.setValue("rebootCommand","sudo reboot");
         settings.setValue("logoutCommand","killall X");
         settings.setValue("customCommand","ls");
+        settings.setValue("suffixDownloads",".part");
+        settings.setValue("downloadsFolder","");
+        settings.setValue("downloadFile","");
+
     }
 
     //Load custom command in lineedit txtCustom
     QSettings settings(settingsFile, QSettings::NativeFormat);
-    QString customCommand = settings.value("customCommand").toString();
-    ui->txtCustom->setText(customCommand);
+    ui->txtCustom->setText(settings.value("customCommand").toString());
+
+    //Load Downloads preference
+    ui->txtDownloadSuffix->setText(settings.value("suffixDownloads").toString());
+    ui->txtDownloasFolder->setText(settings.value("downloadsFolder").toString());
+    ui->txtAfterDownloadFile->setText(settings.value("downloadFile").toString());
+
+    //System tray
+    trayIcon = new QSystemTrayIcon(QIcon(":/icons/logout.png"));
+    trayIcon->show();
+    connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,
+                SLOT(toggleMainWindow()));
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::toggleMainWindow()
+{
+    if (this->isVisible())
+    {  this->hide();
+        trayIcon->showMessage ( tr("Information"), tr("I stay minimized here"));
+    }else this->show();
 }
 
 void MainWindow::on_cmdCancel_clicked()
@@ -58,6 +85,8 @@ void MainWindow::disableGui()
     ui->cmdCloseX->setEnabled(false);
     ui->txtCustom->setEnabled(false);
     ui->cmdCustom->setEnabled(false);
+    ui->tabDownloads->setEnabled(false);
+    //toggleMainWindow();
 }
 
 void MainWindow::on_cmdHalt_clicked()
@@ -285,4 +314,104 @@ void MainWindow::on_actionAuthors_triggered()
 {
     QMessageBox::information(0, qApp->tr("Authors"),
                 qApp->tr("Fabio Di Matteo - (fadimatteo@gmail.com) \n www.freemedialab.org \n\n released under GNU/GPL v3"), QMessageBox::Ok);
+}
+
+void MainWindow::on_cmdHaltAfterAllDownloads_clicked()
+{
+    QSettings settings(settingsFile, QSettings::NativeFormat);
+    settings.setValue("suffixDownloads",ui->txtDownloadSuffix->text());
+    settings.setValue("downloadsFolder",ui->txtDownloasFolder->text());
+
+    if (checkIfDirOk())
+    {
+        timerDownload = new QTimer(this);
+        connect(timerDownload, SIGNAL(timeout()), this, SLOT(checkAllDownloadsEnds()));
+        timerDownload->start(5000);
+        disableGui();
+    }else{
+        QMessageBox::information(0, qApp->tr("Warning"),
+                    qApp->tr("In this folder there are no active downloads "), QMessageBox::Ok);
+    }
+}
+
+void MainWindow::checkAllDownloadsEnds()
+{
+
+   bool allEnds=true;
+
+   QDir dir (ui->txtDownloasFolder->text());
+   QStringList filters ("*"+ui->txtDownloadSuffix->text());
+   QFileInfoList list = dir.entryInfoList (filters);
+   for (int i = 0; i < list.size(); ++i)
+   {
+       QFileInfo fInfo = list.at(i);
+       qDebug() << fInfo.absoluteFilePath();
+   }
+
+   if (list.size()>0){ allEnds=false; qDebug()<< "Waiting for " <<list.size() << " downloads";}
+   if (allEnds==true)
+   {
+       qDebug() << "All downloads are done.";
+       timerDownload->stop();
+       this->halt();
+   }
+
+
+}
+
+void MainWindow::on_cmdDownloadFolder_clicked()
+{
+  ui->txtDownloasFolder->setText(QFileDialog::getExistingDirectory(this, tr("Open Directory"),"", QFileDialog::ShowDirsOnly
+                                                   | QFileDialog::DontResolveSymlinks));
+}
+
+void MainWindow::on_cmdAfterDownloadFile_clicked()
+{
+    ui->txtAfterDownloadFile->setText(QFileDialog::getOpenFileName(this, tr("Open File"),  "",  tr("Files (*.*)")));
+
+
+}
+
+void MainWindow::on_cmdHaltAfterSingleDownload_clicked()
+{
+    QSettings settings(settingsFile, QSettings::NativeFormat);
+    settings.setValue("downloadFile",ui->txtAfterDownloadFile->text());
+
+    timerDownload = new QTimer(this);
+    connect(timerDownload, SIGNAL(timeout()), this, SLOT( checkSingleDownloadEnd()));
+    timerDownload->start(5000);
+    disableGui();
+
+
+}
+
+void MainWindow::checkSingleDownloadEnd()
+{
+
+    //You have to check if filename without .suffix exists
+    QFileInfo file(ui->txtAfterDownloadFile->text());
+    QString baseName = file.completeBaseName();
+    QString path= file.absoluteDir().filePath(baseName);
+
+    QFile f(path);
+    if (f.exists() )
+    {
+        this->halt() ;
+        qDebug() << "Download END :" << path;
+    }
+    //qDebug() << "Check if exists " << path;
+}
+
+
+bool MainWindow::checkIfDirOk()
+{
+    bool ret=false;
+    QDir dir (ui->txtDownloasFolder->text());
+    if (QDir(dir).exists())
+    {
+       QStringList filters ("*"+ui->txtDownloadSuffix->text());
+       QFileInfoList list = dir.entryInfoList (filters);
+       if (list.size()>0) ret=true;
+    }
+    return ret;
 }

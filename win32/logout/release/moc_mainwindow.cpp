@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Sat Jun 29 18:06:02 2013
+** Created: Wed Jul 10 16:13:34 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      21,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -39,11 +39,19 @@ static const uint qt_meta_data_MainWindow[] = {
      116,   11,   11,   11, 0x08,
      148,   11,   11,   11, 0x08,
      161,   11,   11,   11, 0x08,
-     168,   11,   11,   11, 0x08,
-     177,   11,   11,   11, 0x08,
-     191,   11,  186,   11, 0x08,
-     205,   11,   11,   11, 0x08,
-     228,   11,   11,   11, 0x08,
+     180,   11,   11,   11, 0x08,
+     187,   11,   11,   11, 0x08,
+     196,   11,   11,   11, 0x08,
+     210,   11,  205,   11, 0x08,
+     224,   11,   11,   11, 0x08,
+     247,   11,   11,   11, 0x08,
+     276,   11,   11,   11, 0x08,
+     314,   11,   11,   11, 0x08,
+     345,   11,   11,   11, 0x08,
+     379,   11,   11,   11, 0x08,
+     419,   11,   11,   11, 0x08,
+     443,   11,   11,   11, 0x08,
+     468,   11,  205,   11, 0x08,
 
        0        // eod
 };
@@ -53,9 +61,16 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "on_cmdCancel_clicked()\0on_cmdHalt_clicked()\0"
     "on_cmdReboot_clicked()\0on_cmdCloseX_clicked()\0"
     "on_checkDateTime_stateChanged()\0"
-    "disableGui()\0halt()\0reboot()\0logout()\0"
-    "bool\0GetWinToken()\0on_cmdCustom_clicked()\0"
+    "disableGui()\0toggleMainWindow()\0halt()\0"
+    "reboot()\0logout()\0bool\0GetWinToken()\0"
+    "on_cmdCustom_clicked()\0"
     "on_actionAuthors_triggered()\0"
+    "on_cmdHaltAfterAllDownloads_clicked()\0"
+    "on_cmdDownloadFolder_clicked()\0"
+    "on_cmdAfterDownloadFile_clicked()\0"
+    "on_cmdHaltAfterSingleDownload_clicked()\0"
+    "checkAllDownloadsEnds()\0"
+    "checkSingleDownloadEnd()\0checkIfDirOk()\0"
 };
 
 void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -71,13 +86,22 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 4: _t->on_cmdCloseX_clicked(); break;
         case 5: _t->on_checkDateTime_stateChanged(); break;
         case 6: _t->disableGui(); break;
-        case 7: _t->halt(); break;
-        case 8: _t->reboot(); break;
-        case 9: _t->logout(); break;
-        case 10: { bool _r = _t->GetWinToken();
+        case 7: _t->toggleMainWindow(); break;
+        case 8: _t->halt(); break;
+        case 9: _t->reboot(); break;
+        case 10: _t->logout(); break;
+        case 11: { bool _r = _t->GetWinToken();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
-        case 11: _t->on_cmdCustom_clicked(); break;
-        case 12: _t->on_actionAuthors_triggered(); break;
+        case 12: _t->on_cmdCustom_clicked(); break;
+        case 13: _t->on_actionAuthors_triggered(); break;
+        case 14: _t->on_cmdHaltAfterAllDownloads_clicked(); break;
+        case 15: _t->on_cmdDownloadFolder_clicked(); break;
+        case 16: _t->on_cmdAfterDownloadFile_clicked(); break;
+        case 17: _t->on_cmdHaltAfterSingleDownload_clicked(); break;
+        case 18: _t->checkAllDownloadsEnds(); break;
+        case 19: _t->checkSingleDownloadEnd(); break;
+        case 20: { bool _r = _t->checkIfDirOk();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         default: ;
         }
     }
@@ -115,9 +139,9 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 13)
+        if (_id < 21)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 13;
+        _id -= 21;
     }
     return _id;
 }
