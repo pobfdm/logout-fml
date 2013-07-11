@@ -23,16 +23,28 @@ MainWindow::MainWindow(QWidget *parent) :
     //Grab Current date and time
     ui->dateTimeEdit->setDate(QDate::currentDate());
     ui->dateTimeEdit->setTime(QTime::currentTime());
-
+#ifdef Q_OS_LINUX
     //Folder for settings (.ini file)
     QString settingsHome=QDir::homePath()+"/.config/logout" ;
     if (!QDir(settingsHome).exists()) QDir().mkdir(settingsHome);
 
     //Settings file (.ini)
     settingsFile=settingsHome+"/settings.ini";
+#endif
+#ifdef Q_OS_WIN32
+    //Folder for settings (.ini file)
+    QString settingsHome=QDir::homePath()+"/logout" ;
+    if (!QDir(settingsHome).exists()) QDir().mkdir(settingsHome);
+
+    //Settings file (.ini)
+    settingsFile=settingsHome+"/settings.ini";
+#endif
+
+
+
     if (!QFile(settingsFile).exists())
     {
-        QSettings settings(settingsFile, QSettings::NativeFormat);
+        QSettings settings(settingsFile, QSettings::IniFormat);
         settings.setValue("haltCommand","sudo halt");
         settings.setValue("rebootCommand","sudo reboot");
         settings.setValue("logoutCommand","killall X");
@@ -44,7 +56,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     //Load custom command in lineedit txtCustom
-    QSettings settings(settingsFile, QSettings::NativeFormat);
+    QSettings settings(settingsFile, QSettings::IniFormat);
     ui->txtCustom->setText(settings.value("customCommand").toString());
 
     //Load Downloads preference
@@ -202,7 +214,7 @@ bool MainWindow::GetWinToken()
 void MainWindow::halt()
 {
     #ifdef Q_OS_LINUX
-    QSettings settings(settingsFile, QSettings::NativeFormat);
+    QSettings settings(settingsFile, QSettings::IniFormat);
     QString haltCommand = settings.value("haltCommand").toString();
 
     if (haltCommand=="")
@@ -232,7 +244,7 @@ void MainWindow::halt()
 void MainWindow::reboot()
 {
     #ifdef Q_OS_LINUX
-    QSettings settings(settingsFile, QSettings::NativeFormat);
+    QSettings settings(settingsFile, QSettings::IniFormat);
     QString rebootCommand = settings.value("rebootCommand").toString();
 
     if (rebootCommand=="")
@@ -263,7 +275,7 @@ void MainWindow::reboot()
 void MainWindow::logout()
 {
     #ifdef Q_OS_LINUX
-    QSettings settings(settingsFile, QSettings::NativeFormat);
+    QSettings settings(settingsFile, QSettings::IniFormat);
     QString logoutCommand = settings.value("logoutCommand").toString();
 
     if (logoutCommand=="")
@@ -293,7 +305,7 @@ void MainWindow::logout()
 void MainWindow::on_cmdCustom_clicked()
 {
 
-    QSettings settings(settingsFile, QSettings::NativeFormat);
+    QSettings settings(settingsFile, QSettings::IniFormat);
     settings.setValue("customCommand",ui->txtCustom->text());
 
     if (ui->checkDateTime->isChecked())
@@ -318,7 +330,7 @@ void MainWindow::on_actionAuthors_triggered()
 
 void MainWindow::on_cmdHaltAfterAllDownloads_clicked()
 {
-    QSettings settings(settingsFile, QSettings::NativeFormat);
+    QSettings settings(settingsFile, QSettings::IniFormat);
     settings.setValue("suffixDownloads",ui->txtDownloadSuffix->text());
     settings.setValue("downloadsFolder",ui->txtDownloasFolder->text());
 
@@ -374,7 +386,7 @@ void MainWindow::on_cmdAfterDownloadFile_clicked()
 
 void MainWindow::on_cmdHaltAfterSingleDownload_clicked()
 {
-    QSettings settings(settingsFile, QSettings::NativeFormat);
+    QSettings settings(settingsFile, QSettings::IniFormat);
     settings.setValue("downloadFile",ui->txtAfterDownloadFile->text());
 
     timerDownload = new QTimer(this);
