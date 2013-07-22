@@ -19,7 +19,7 @@
         <translation type="unfinished">Riavvia</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="299"/>
+        <location filename="mainwindow.ui" line="318"/>
         <source>Cancel</source>
         <translation type="unfinished">Annulla</translation>
     </message>
@@ -70,13 +70,13 @@
         <translation type="unfinished">Spegni dopo questo</translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="314"/>
+        <location filename="mainwindow.ui" line="333"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="322"/>
-        <location filename="mainwindow.cpp" line="315"/>
+        <location filename="mainwindow.ui" line="341"/>
+        <location filename="mainwindow.cpp" line="326"/>
         <source>Authors</source>
         <translation type="unfinished"></translation>
     </message>
@@ -100,43 +100,43 @@
         <translation type="unfinished">Avvia</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="72"/>
+        <location filename="mainwindow.cpp" line="84"/>
         <source>Information</source>
         <translation type="unfinished">Informazione</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="72"/>
+        <location filename="mainwindow.cpp" line="84"/>
         <source>I stay minimized here</source>
         <translation type="unfinished">Resto minimizzato qui</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="223"/>
-        <location filename="mainwindow.cpp" line="254"/>
-        <location filename="mainwindow.cpp" line="283"/>
-        <location filename="mainwindow.cpp" line="332"/>
+        <location filename="mainwindow.cpp" line="234"/>
+        <location filename="mainwindow.cpp" line="265"/>
+        <location filename="mainwindow.cpp" line="294"/>
+        <location filename="mainwindow.cpp" line="343"/>
         <source>Warning</source>
         <translation type="unfinished">Attenzione</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="224"/>
+        <location filename="mainwindow.cpp" line="235"/>
         <source>It was not possible to turn off the computer.
 </source>
         <translation type="unfinished">Non e&apos; stato possibile spegnere il computer. \n</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="255"/>
+        <location filename="mainwindow.cpp" line="266"/>
         <source>It was not possible to reboot the computer.
 </source>
         <translation type="unfinished">Non e&apos; stato possibile riavviare il computer. \n</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="284"/>
+        <location filename="mainwindow.cpp" line="295"/>
         <source>It was not possible to logout.
 </source>
         <translation type="unfinished">Non e&apos; stato possibile eseguire il logout.\n</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="316"/>
+        <location filename="mainwindow.cpp" line="327"/>
         <source>Fabio Di Matteo - (fadimatteo@gmail.com) 
  www.freemedialab.org 
 
@@ -144,22 +144,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="333"/>
+        <location filename="mainwindow.cpp" line="344"/>
         <source>In this folder there are no active downloads </source>
         <translation type="unfinished">In questa cartella non ci sono scaricamenti attivi</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="364"/>
+        <location filename="mainwindow.cpp" line="359"/>
+        <source>Waiting for </source>
+        <translation type="unfinished">Sto aspettando </translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="359"/>
+        <source> downloads.</source>
+        <translation type="unfinished"> scaricamenti</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="366"/>
+        <source>All downloads are done.</source>
+        <translation type="unfinished">Tutti gli scaricamenti sono stati eseguiti.</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="404"/>
         <source>Open Directory</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Apri cartella</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="370"/>
+        <location filename="mainwindow.cpp" line="410"/>
         <source>Open File</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Apri file</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="370"/>
+        <location filename="mainwindow.cpp" line="410"/>
         <source>Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
