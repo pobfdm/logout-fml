@@ -323,8 +323,8 @@ void MainWindow::on_cmdCustom_clicked()
 
 void MainWindow::on_actionAuthors_triggered()
 {
-    QMessageBox::information(0, qApp->tr("Authors"),
-                qApp->tr("Fabio Di Matteo - (fadimatteo@gmail.com) \n www.freemedialab.org \n\n released under GNU/GPL v3"), QMessageBox::Ok);
+    QMessageBox::information(0, tr("Authors"),
+                tr("Fabio Di Matteo - (fadimatteo@gmail.com) \n www.freemedialab.org \n\n released under GNU/GPL v3"), QMessageBox::Ok);
 }
 
 void MainWindow::on_cmdHaltAfterAllDownloads_clicked()
@@ -340,9 +340,10 @@ void MainWindow::on_cmdHaltAfterAllDownloads_clicked()
         timerDownload->start(5000);
         disableGui();
     }else{
-        QMessageBox::information(0, qApp->tr("Warning"),
-                    qApp->tr("In this folder there are no active downloads "), QMessageBox::Ok);
+        QMessageBox::information(0, tr("Warning"),
+                    tr("In this folder there are no active downloads "), QMessageBox::Ok);
     }
+    ui->lblDownloadsStatus->setText(tr("Waiting..."));
 }
 
 void MainWindow::checkAllDownloadsEnds()

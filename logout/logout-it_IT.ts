@@ -149,32 +149,37 @@
         <translation type="unfinished">In questa cartella non ci sono scaricamenti attivi</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="359"/>
+        <location filename="mainwindow.cpp" line="346"/>
+        <source>Waiting...</source>
+        <translation type="unfinished">Sto aspettando ...</translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="360"/>
         <source>Waiting for </source>
         <translation type="unfinished">Sto aspettando </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="359"/>
+        <location filename="mainwindow.cpp" line="360"/>
         <source> downloads.</source>
         <translation type="unfinished"> scaricamenti</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="366"/>
+        <location filename="mainwindow.cpp" line="367"/>
         <source>All downloads are done.</source>
         <translation type="unfinished">Tutti gli scaricamenti sono stati eseguiti.</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="404"/>
+        <location filename="mainwindow.cpp" line="405"/>
         <source>Open Directory</source>
         <translation type="unfinished">Apri cartella</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="410"/>
+        <location filename="mainwindow.cpp" line="411"/>
         <source>Open File</source>
         <translation type="unfinished">Apri file</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="410"/>
+        <location filename="mainwindow.cpp" line="411"/>
         <source>Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
