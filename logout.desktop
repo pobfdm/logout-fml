@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Logout
-Exec=/usr/bin/logout
+Exec=/usr/bin/logout-fml
 MimeType=application/octet-stream
 Icon=/usr/share/logout/logout.png
 Categories=System;

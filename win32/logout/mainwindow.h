@@ -9,6 +9,7 @@
 #include <QSettings>
 
 #include <QSystemTrayIcon>
+#include <QFileInfo>
 
 namespace Ui {
 class MainWindow;
@@ -65,12 +66,14 @@ private slots:
     void checkAllDownloadsEnds();
     void checkSingleDownloadEnd();
     bool checkIfDirOk();
+    void scanDirs(QString folder);
 
 private:
     QString operation, settingsFile;
     QTimer *timer, *timerDownload ;
     Ui::MainWindow *ui;
     QSystemTrayIcon *trayIcon ;
+    QFileInfoList listFilesDownloads;
 
 };
 

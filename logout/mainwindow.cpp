@@ -131,7 +131,6 @@ void MainWindow::on_cmdReboot_clicked()
 
 void MainWindow::checkMyDate()
 {
-    //qDebug() << "Timer eseguito";
     QDate nowDate= QDate::currentDate();
     QTime nowTime= QTime::currentTime();
 
@@ -351,24 +350,53 @@ void MainWindow::checkAllDownloadsEnds()
 
    bool allEnds=true;
 
-   QDir dir (ui->txtDownloasFolder->text());
-   QStringList filters ("*"+ui->txtDownloadSuffix->text());
-   QFileInfoList list = dir.entryInfoList (filters);
-   for (int i = 0; i < list.size(); ++i)
+   listFilesDownloads.clear();
+   this->scanDirs(ui->txtDownloasFolder->text());
+   if (listFilesDownloads.size()>0)
    {
-       QFileInfo fInfo = list.at(i);
-       qDebug() << fInfo.absoluteFilePath();
+       allEnds=false;
+       //qDebug()<< "Waiting for " <<listFilesDownloads.size() << " downloads";
+       ui->lblDownloadsStatus->setText(tr("Waiting for ")+QString::number(listFilesDownloads.size())+tr(" downloads."));
+
    }
 
-   if (list.size()>0){ allEnds=false; qDebug()<< "Waiting for " <<list.size() << " downloads";}
    if (allEnds==true)
    {
-       qDebug() << "All downloads are done.";
+       //qDebug() << "All downloads are done.";
+       ui->lblDownloadsStatus->setText(tr("All downloads are done."));
        timerDownload->stop();
        this->halt();
    }
 
 
+}
+
+void MainWindow::scanDirs(QString folder)
+{
+    QDir dir(folder);
+    if (dir.exists())
+    {
+        foreach(QFileInfo info, dir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files | QDir::AllDirs ))
+        {
+
+            if (info.isFile())
+            {
+
+                //Do something with file
+                if ("."+info.suffix()==ui->txtDownloadSuffix->text())
+                {
+                    listFilesDownloads.append(info);
+                    //qDebug() << info.fileName();
+                }
+            }
+            if (info.isDir())
+            {
+                //Do something with folders
+                this->scanDirs(info.absoluteFilePath());
+
+            }
+        }
+    }
 }
 
 void MainWindow::on_cmdDownloadFolder_clicked()
@@ -418,12 +446,15 @@ void MainWindow::checkSingleDownloadEnd()
 bool MainWindow::checkIfDirOk()
 {
     bool ret=false;
-    QDir dir (ui->txtDownloasFolder->text());
+    /*QDir dir (ui->txtDownloasFolder->text());
     if (QDir(dir).exists())
     {
        QStringList filters ("*"+ui->txtDownloadSuffix->text());
        QFileInfoList list = dir.entryInfoList (filters);
        if (list.size()>0) ret=true;
-    }
+    }*/
+    scanDirs(ui->txtDownloasFolder->text());
+    if (listFilesDownloads.size()>0)ret=true;
+    listFilesDownloads.clear();
     return ret;
 }

@@ -19,18 +19,8 @@
  * 
  */
 
-How to  compile and install:
+How to  compile :
 
 	cd logout
 	qmake 		(or qmake-qt4, or qmake-qt5 )
 	make
-	make install
-
-to uninstall:
-
-	make uninstall
-
-
-
-Note:
-If you want customize the commands you can edit ~/.config/logout/settings.ini

@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = logout
+TARGET = logout-fml
 TEMPLATE = app
 
 
@@ -24,7 +24,7 @@ TRANSLATIONS = logout-it_IT.ts
 DESTDIR = ../bin/
 
 #Install main binary
-target.files = ../bin/logout
+target.files = ../bin/logout-fml
 target.path = /usr/bin
 INSTALLS += target
 

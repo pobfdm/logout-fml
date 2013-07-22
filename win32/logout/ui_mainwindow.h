@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created: Wed Jul 10 16:13:25 2013
-**      by: Qt User Interface Compiler version 4.8.1
+** Created: Mon Jul 22 10:11:21 2013
+**      by: Qt User Interface Compiler version 4.8.4
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -54,6 +54,7 @@ public:
     QLineEdit *txtAfterDownloadFile;
     QPushButton *cmdHaltAfterAllDownloads;
     QPushButton *cmdHaltAfterSingleDownload;
+    QLabel *lblDownloadsStatus;
     QPushButton *cmdCancel;
     QMenuBar *menuBar;
     QMenu *menuInfo;
@@ -138,6 +139,11 @@ public:
         cmdHaltAfterSingleDownload = new QPushButton(tabDownloads);
         cmdHaltAfterSingleDownload->setObjectName(QString::fromUtf8("cmdHaltAfterSingleDownload"));
         cmdHaltAfterSingleDownload->setGeometry(QRect(250, 130, 125, 27));
+        lblDownloadsStatus = new QLabel(tabDownloads);
+        lblDownloadsStatus->setObjectName(QString::fromUtf8("lblDownloadsStatus"));
+        lblDownloadsStatus->setGeometry(QRect(0, 220, 381, 20));
+        lblDownloadsStatus->setFrameShape(QFrame::Panel);
+        lblDownloadsStatus->setFrameShadow(QFrame::Sunken);
         tabWidget->addTab(tabDownloads, QString());
         cmdCancel = new QPushButton(centralWidget);
         cmdCancel->setObjectName(QString::fromUtf8("cmdCancel"));
@@ -183,6 +189,7 @@ public:
         lblDownloadFile->setText(QApplication::translate("MainWindow", "After dowload file:", 0, QApplication::UnicodeUTF8));
         cmdHaltAfterAllDownloads->setText(QApplication::translate("MainWindow", "Halt after all", 0, QApplication::UnicodeUTF8));
         cmdHaltAfterSingleDownload->setText(QApplication::translate("MainWindow", "Halt after this", 0, QApplication::UnicodeUTF8));
+        lblDownloadsStatus->setText(QString());
         tabWidget->setTabText(tabWidget->indexOf(tabDownloads), QApplication::translate("MainWindow", "Downloads", 0, QApplication::UnicodeUTF8));
         cmdCancel->setText(QApplication::translate("MainWindow", "Cancel", 0, QApplication::UnicodeUTF8));
         menuInfo->setTitle(QApplication::translate("MainWindow", "Info", 0, QApplication::UnicodeUTF8));

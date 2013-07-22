@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Wed Jul 10 16:13:34 2013
+** Created: Mon Jul 22 10:23:58 2013
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      21,   14, // methods
+      22,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -52,6 +52,7 @@ static const uint qt_meta_data_MainWindow[] = {
      419,   11,   11,   11, 0x08,
      443,   11,   11,   11, 0x08,
      468,   11,  205,   11, 0x08,
+     490,  483,   11,   11, 0x08,
 
        0        // eod
 };
@@ -71,6 +72,7 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "on_cmdHaltAfterSingleDownload_clicked()\0"
     "checkAllDownloadsEnds()\0"
     "checkSingleDownloadEnd()\0checkIfDirOk()\0"
+    "folder\0scanDirs(QString)\0"
 };
 
 void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -102,6 +104,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 19: _t->checkSingleDownloadEnd(); break;
         case 20: { bool _r = _t->checkIfDirOk();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 21: _t->scanDirs((*reinterpret_cast< QString(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -139,9 +142,9 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 21)
+        if (_id < 22)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 21;
+        _id -= 22;
     }
     return _id;
 }
