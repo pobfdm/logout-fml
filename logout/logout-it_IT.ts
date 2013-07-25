@@ -57,7 +57,7 @@
     <message>
         <location filename="mainwindow.ui" line="245"/>
         <source>After dowload file:</source>
-        <translation type="unfinished">Spegni dopo questo</translation>
+        <translation type="unfinished">Spegni dopo questo:</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="271"/>
@@ -72,13 +72,13 @@
     <message>
         <location filename="mainwindow.ui" line="333"/>
         <source>Info</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Informazione</translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="341"/>
         <location filename="mainwindow.cpp" line="326"/>
         <source>Authors</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Autori</translation>
     </message>
     <message>
         <source>Quit</source>
@@ -161,7 +161,7 @@
     <message>
         <location filename="mainwindow.cpp" line="360"/>
         <source> downloads.</source>
-        <translation type="unfinished"> scaricamenti</translation>
+        <translation type="unfinished"> scaricamenti.</translation>
     </message>
     <message>
         <location filename="mainwindow.cpp" line="367"/>
@@ -182,6 +182,17 @@
         <location filename="mainwindow.cpp" line="411"/>
         <source>Files (*.*)</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="425"/>
+        <location filename="mainwindow.cpp" line="447"/>
+        <source>Shutdown after </source>
+        <translation type="unfinished">Spengo dopo </translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="444"/>
+        <source>Download done.</source>
+        <translation type="unfinished">Scaricamento eseguito.</translation>
     </message>
 </context>
 </TS>

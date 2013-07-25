@@ -231,8 +231,8 @@ void MainWindow::halt()
 
     if (!ExitWindowsEx(EWX_POWEROFF, 0) )
     {
-        QMessageBox::critical(0, qApp->tr("Warning"),
-                    qApp->tr("It was not possible to turn off the computer.\n"), QMessageBox::Ok);
+        QMessageBox::critical(0, tr("Warning"),
+                              tr("It was not possible to turn off the computer.\n"), QMessageBox::Ok);
 
     }else{
         wprintf(L"spegnimento in corso...\n");
@@ -262,8 +262,8 @@ void MainWindow::reboot()
     // in base ai vari flag che gli siano dati come parametro.
     if (!ExitWindowsEx(EWX_REBOOT, 0) )
     {
-        QMessageBox::critical(0, qApp->tr("Warning"),
-                    qApp->tr("It was not possible to reboot the computer.\n"), QMessageBox::Ok);
+        QMessageBox::critical(0, tr("Warning"),
+                    tr("It was not possible to reboot the computer.\n"), QMessageBox::Ok);
     }else{
         wprintf(L"spegnimento in corso...\n");
     }
@@ -291,8 +291,8 @@ void MainWindow::logout()
 
     if (!ExitWindowsEx(EWX_LOGOFF, 0) )
     {
-        QMessageBox::critical(0, qApp->tr("Warning"),
-                    qApp->tr("It was not possible to logout.\n"), QMessageBox::Ok);
+        QMessageBox::critical(0, tr("Warning"),
+                    tr("It was not possible to logout.\n"), QMessageBox::Ok);
 
     }else{
         wprintf(L"Logout in corso...\n");
@@ -422,7 +422,7 @@ void MainWindow::on_cmdHaltAfterSingleDownload_clicked()
     connect(timerDownload, SIGNAL(timeout()), this, SLOT( checkSingleDownloadEnd()));
     timerDownload->start(5000);
     disableGui();
-
+    ui->lblDownloadsStatus->setText(tr("Shutdown after ")+ui->txtAfterDownloadFile->text());
 
 }
 
@@ -435,12 +435,17 @@ void MainWindow::checkSingleDownloadEnd()
     QString path= file.absoluteDir().filePath(baseName);
 
     QFile f(path);
-    if (f.exists() )
+    QFile fpart(ui->txtAfterDownloadFile->text());
+
+    if (f.exists() && !fpart.exists() )
     {
         this->halt() ;
         qDebug() << "Download END :" << path;
+        ui->lblDownloadsStatus->setText(tr("Download done."));
     }
-    //qDebug() << "Check if exists " << path;
+
+    ui->lblDownloadsStatus->setText(tr("Shutdown after ")+file.fileName());
+
 }
 
 
