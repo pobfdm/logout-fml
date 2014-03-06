@@ -2,6 +2,8 @@
 Encoding=UTF-8
 Name=Logout
 Exec=/usr/bin/logout-fml
+TryExec=/usr/bin/logout-fml
+Type=Application
 MimeType=application/octet-stream
 Icon=/usr/share/logout/logout.png
 Categories=System;

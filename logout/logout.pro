@@ -6,6 +6,8 @@
 
 QT       += core gui
 
+
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = logout-fml
@@ -20,23 +22,28 @@ HEADERS  += mainwindow.h
 FORMS    += mainwindow.ui
 TRANSLATIONS = logout-it_IT.ts
 
-#Binary build dir
-DESTDIR = ../bin/
 
-#Install main binary
-target.files = ../bin/logout-fml
-target.path = /usr/bin
-INSTALLS += target
+unix {
+    #Binary build dir
+    DESTDIR = ../bin/
 
-#install share
-data.files = ../share/*
-data.path = /usr/share/
-INSTALLS += data
+    #Install main binary
+    target.files = ../bin/logout-fml
+    target.path = /usr/bin
+    INSTALLS += target
 
-#install .desktop
-menu.files = ../logout.desktop
-menu.path = /usr/share/applications
-INSTALLS += menu
+    #install share
+    data.files = ../share/*
+    data.path = /usr/share/
+    INSTALLS += data
+
+    #install .desktop
+    menu.files = ../logout.desktop
+    menu.path = /usr/share/applications
+    INSTALLS += menu
+}
+
+
 
 RESOURCES += \
     resource.qrc
