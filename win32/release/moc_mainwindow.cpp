@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Thu Mar 6 12:13:25 2014
+** Created: Thu Mar 13 13:09:58 2014
 **      by: The Qt Meta Object Compiler version 63 (Qt 4.8.1)
 **
 ** WARNING! All changes made in this file will be lost!
@@ -23,7 +23,7 @@ static const uint qt_meta_data_MainWindow[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      22,   14, // methods
+      29,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -53,6 +53,13 @@ static const uint qt_meta_data_MainWindow[] = {
      443,   11,   11,   11, 0x08,
      468,   11,  205,   11, 0x08,
      490,  483,   11,   11, 0x08,
+     508,   11,   11,   11, 0x08,
+     537,   11,   11,   11, 0x08,
+     559,   11,   11,   11, 0x08,
+     579,   11,   11,   11, 0x08,
+     599,   11,   11,   11, 0x08,
+     628,   11,  205,   11, 0x08,
+     653,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -73,6 +80,11 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "checkAllDownloadsEnds()\0"
     "checkSingleDownloadEnd()\0checkIfDirOk()\0"
     "folder\0scanDirs(QString)\0"
+    "on_cmdEverydayDone_clicked()\0"
+    "CheckIfEverydayMode()\0CheckEverydayTime()\0"
+    "LastWarningMsgbox()\0on_cmdEverydayStop_clicked()\0"
+    "checkIfTaskisInThePast()\0"
+    "on_checkBoxEnableEveryday_stateChanged()\0"
 };
 
 void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -105,6 +117,14 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 20: { bool _r = _t->checkIfDirOk();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 21: _t->scanDirs((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 22: _t->on_cmdEverydayDone_clicked(); break;
+        case 23: _t->CheckIfEverydayMode(); break;
+        case 24: _t->CheckEverydayTime(); break;
+        case 25: _t->LastWarningMsgbox(); break;
+        case 26: _t->on_cmdEverydayStop_clicked(); break;
+        case 27: { bool _r = _t->checkIfTaskisInThePast();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 28: _t->on_checkBoxEnableEveryday_stateChanged(); break;
         default: ;
         }
     }
@@ -142,9 +162,9 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 22)
+        if (_id < 29)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 22;
+        _id -= 29;
     }
     return _id;
 }

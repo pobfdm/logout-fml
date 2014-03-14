@@ -14,6 +14,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
 #include <QtGui/QDateTimeEdit>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
@@ -23,6 +24,7 @@
 #include <QtGui/QMenuBar>
 #include <QtGui/QPushButton>
 #include <QtGui/QTabWidget>
+#include <QtGui/QTimeEdit>
 #include <QtGui/QToolButton>
 #include <QtGui/QWidget>
 
@@ -54,6 +56,15 @@ public:
     QPushButton *cmdHaltAfterAllDownloads;
     QPushButton *cmdHaltAfterSingleDownload;
     QLabel *lblDownloadsStatus;
+    QWidget *tabEveryday;
+    QCheckBox *checkBoxEnableEveryday;
+    QTimeEdit *timeEditEveryDay;
+    QLabel *lblTimeEveryDay;
+    QComboBox *cmbEverydayCmd;
+    QLabel *lblCmdEveryDay;
+    QPushButton *cmdEverydayDone;
+    QCheckBox *checkBoxEverydayRunMinimized;
+    QPushButton *cmdEverydayStop;
     QPushButton *cmdCancel;
     QMenuBar *menuBar;
     QMenu *menuInfo;
@@ -144,6 +155,35 @@ public:
         lblDownloadsStatus->setFrameShape(QFrame::Panel);
         lblDownloadsStatus->setFrameShadow(QFrame::Sunken);
         tabWidget->addTab(tabDownloads, QString());
+        tabEveryday = new QWidget();
+        tabEveryday->setObjectName(QString::fromUtf8("tabEveryday"));
+        tabEveryday->setStyleSheet(QString::fromUtf8(""));
+        checkBoxEnableEveryday = new QCheckBox(tabEveryday);
+        checkBoxEnableEveryday->setObjectName(QString::fromUtf8("checkBoxEnableEveryday"));
+        checkBoxEnableEveryday->setGeometry(QRect(100, 30, 81, 19));
+        timeEditEveryDay = new QTimeEdit(tabEveryday);
+        timeEditEveryDay->setObjectName(QString::fromUtf8("timeEditEveryDay"));
+        timeEditEveryDay->setGeometry(QRect(100, 80, 71, 24));
+        lblTimeEveryDay = new QLabel(tabEveryday);
+        lblTimeEveryDay->setObjectName(QString::fromUtf8("lblTimeEveryDay"));
+        lblTimeEveryDay->setGeometry(QRect(100, 60, 61, 14));
+        cmbEverydayCmd = new QComboBox(tabEveryday);
+        cmbEverydayCmd->setObjectName(QString::fromUtf8("cmbEverydayCmd"));
+        cmbEverydayCmd->setGeometry(QRect(180, 80, 141, 24));
+        lblCmdEveryDay = new QLabel(tabEveryday);
+        lblCmdEveryDay->setObjectName(QString::fromUtf8("lblCmdEveryDay"));
+        lblCmdEveryDay->setGeometry(QRect(180, 60, 61, 14));
+        cmdEverydayDone = new QPushButton(tabEveryday);
+        cmdEverydayDone->setObjectName(QString::fromUtf8("cmdEverydayDone"));
+        cmdEverydayDone->setGeometry(QRect(240, 150, 85, 27));
+        checkBoxEverydayRunMinimized = new QCheckBox(tabEveryday);
+        checkBoxEverydayRunMinimized->setObjectName(QString::fromUtf8("checkBoxEverydayRunMinimized"));
+        checkBoxEverydayRunMinimized->setGeometry(QRect(100, 110, 221, 19));
+        cmdEverydayStop = new QPushButton(tabEveryday);
+        cmdEverydayStop->setObjectName(QString::fromUtf8("cmdEverydayStop"));
+        cmdEverydayStop->setEnabled(false);
+        cmdEverydayStop->setGeometry(QRect(100, 150, 85, 27));
+        tabWidget->addTab(tabEveryday, QString());
         cmdCancel = new QPushButton(centralWidget);
         cmdCancel->setObjectName(QString::fromUtf8("cmdCancel"));
         cmdCancel->setGeometry(QRect(320, 290, 101, 27));
@@ -161,7 +201,8 @@ public:
         retranslateUi(MainWindow);
         QObject::connect(MainWindow, SIGNAL(timeout()), MainWindow, SLOT(checkMyDate()));
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(2);
+        cmbEverydayCmd->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -174,6 +215,12 @@ public:
 #ifndef QT_NO_TOOLTIP
         tabWidget->setToolTip(QString());
 #endif // QT_NO_TOOLTIP
+#ifndef QT_NO_STATUSTIP
+        tabWidget->setStatusTip(QString());
+#endif // QT_NO_STATUSTIP
+#ifndef QT_NO_ACCESSIBILITY
+        tabWidget->setAccessibleName(QString());
+#endif // QT_NO_ACCESSIBILITY
         cmdCloseX->setText(QApplication::translate("MainWindow", "Close session", 0, QApplication::UnicodeUTF8));
         cmdReboot->setText(QApplication::translate("MainWindow", "Reboot", 0, QApplication::UnicodeUTF8));
         checkDateTime->setText(QApplication::translate("MainWindow", "Enable date time", 0, QApplication::UnicodeUTF8));
@@ -190,6 +237,22 @@ public:
         cmdHaltAfterSingleDownload->setText(QApplication::translate("MainWindow", "Halt after this", 0, QApplication::UnicodeUTF8));
         lblDownloadsStatus->setText(QString());
         tabWidget->setTabText(tabWidget->indexOf(tabDownloads), QApplication::translate("MainWindow", "Downloads", 0, QApplication::UnicodeUTF8));
+#ifndef QT_NO_TOOLTIP
+        tabEveryday->setToolTip(QString());
+#endif // QT_NO_TOOLTIP
+        checkBoxEnableEveryday->setText(QApplication::translate("MainWindow", "Enable", 0, QApplication::UnicodeUTF8));
+        lblTimeEveryDay->setText(QApplication::translate("MainWindow", "Time", 0, QApplication::UnicodeUTF8));
+        cmbEverydayCmd->clear();
+        cmbEverydayCmd->insertItems(0, QStringList()
+         << QApplication::translate("MainWindow", "Halt", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("MainWindow", "Reboot", 0, QApplication::UnicodeUTF8)
+         << QApplication::translate("MainWindow", "Custom command (from standard tab)", 0, QApplication::UnicodeUTF8)
+        );
+        lblCmdEveryDay->setText(QApplication::translate("MainWindow", "Command", 0, QApplication::UnicodeUTF8));
+        cmdEverydayDone->setText(QApplication::translate("MainWindow", "Done", 0, QApplication::UnicodeUTF8));
+        checkBoxEverydayRunMinimized->setText(QApplication::translate("MainWindow", "Hide main window", 0, QApplication::UnicodeUTF8));
+        cmdEverydayStop->setText(QApplication::translate("MainWindow", "Stop", 0, QApplication::UnicodeUTF8));
+        tabWidget->setTabText(tabWidget->indexOf(tabEveryday), QApplication::translate("MainWindow", "Everyday", 0, QApplication::UnicodeUTF8));
         cmdCancel->setText(QApplication::translate("MainWindow", "Cancel", 0, QApplication::UnicodeUTF8));
         menuInfo->setTitle(QApplication::translate("MainWindow", "Info", 0, QApplication::UnicodeUTF8));
     } // retranslateUi

@@ -68,12 +68,24 @@ private slots:
     bool checkIfDirOk();
     void scanDirs(QString folder);
 
+    void on_cmdEverydayDone_clicked();
+
+    void CheckIfEverydayMode();
+    void CheckEverydayTime();
+    void LastWarningMsgbox();
+
+    void on_cmdEverydayStop_clicked();
+    bool checkIfTaskisInThePast();
+
+    void on_checkBoxEnableEveryday_stateChanged();
+
 private:
-    QString operation, settingsFile;
-    QTimer *timer, *timerDownload ;
+    QString operation, settingsFile,WarningOperation, CancelOperation;
+    QTimer *timer, *timerDownload, *timerEveryday ;
     Ui::MainWindow *ui;
     QSystemTrayIcon *trayIcon ;
     QFileInfoList listFilesDownloads;
+    bool LastWarningEveryday;
 
 };
 

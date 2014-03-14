@@ -1,8 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'mainwindow.h'
 **
-** Created: Fri Dec 20 09:15:49 2013
-**      by: The Qt Meta Object Compiler version 63 (Qt 4.8.4)
+** Created by: The Qt Meta Object Compiler version 63 (Qt 4.8.5)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -11,7 +10,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'mainwindow.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 63
-#error "This file was generated using the moc from 4.8.4. It"
+#error "This file was generated using the moc from 4.8.5. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -23,7 +22,7 @@ static const uint qt_meta_data_MainWindow[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      21,   14, // methods
+      28,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -52,6 +51,13 @@ static const uint qt_meta_data_MainWindow[] = {
      424,   11,   11,   11, 0x08,
      454,   11,  449,   11, 0x08,
      476,  469,   11,   11, 0x08,
+     494,   11,   11,   11, 0x08,
+     523,   11,   11,   11, 0x08,
+     545,   11,   11,   11, 0x08,
+     565,   11,   11,   11, 0x08,
+     585,   11,   11,   11, 0x08,
+     614,   11,  449,   11, 0x08,
+     639,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -71,6 +77,11 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "checkAllDownloadsEnds()\0"
     "checkSingleDownloadEnd()\0bool\0"
     "checkIfDirOk()\0folder\0scanDirs(QString)\0"
+    "on_cmdEverydayDone_clicked()\0"
+    "CheckIfEverydayMode()\0CheckEverydayTime()\0"
+    "LastWarningMsgbox()\0on_cmdEverydayStop_clicked()\0"
+    "checkIfTaskisInThePast()\0"
+    "on_checkBoxEnableEveryday_stateChanged()\0"
 };
 
 void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -101,6 +112,14 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 19: { bool _r = _t->checkIfDirOk();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 20: _t->scanDirs((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 21: _t->on_cmdEverydayDone_clicked(); break;
+        case 22: _t->CheckIfEverydayMode(); break;
+        case 23: _t->CheckEverydayTime(); break;
+        case 24: _t->LastWarningMsgbox(); break;
+        case 25: _t->on_cmdEverydayStop_clicked(); break;
+        case 26: { bool _r = _t->checkIfTaskisInThePast();
+            if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
+        case 27: _t->on_checkBoxEnableEveryday_stateChanged(); break;
         default: ;
         }
     }
@@ -138,9 +157,9 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 21)
+        if (_id < 28)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 21;
+        _id -= 28;
     }
     return _id;
 }

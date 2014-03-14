@@ -11,6 +11,7 @@
 #include <QStringList>
 
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -59,16 +60,52 @@ MainWindow::MainWindow(QWidget *parent) :
     QSettings settings(settingsFile, QSettings::IniFormat);
     ui->txtCustom->setText(settings.value("customCommand").toString());
 
-    //Load Downloads preference
+    //Load Downloads preferences
     ui->txtDownloadSuffix->setText(settings.value("suffixDownloads").toString());
     ui->txtDownloasFolder->setText(settings.value("downloadsFolder").toString());
     ui->txtAfterDownloadFile->setText(settings.value("downloadFile").toString());
+
+    //Load Everyday preferences
+    if (settings.value("everyDayMode").toString()=="on") ui->checkBoxEnableEveryday->setChecked(true);
+
+
+    #ifdef Q_OS_WIN32
+    QTime Time= settings.value("everyDayTime").toTime();  //Load preference for timeEditEveryDay
+    ui->timeEditEveryDay->setTime(Time);
+    #endif
+
+    #ifdef Q_OS_LINUX
+    QString Time= settings.value("everyDayTime").toString();  //Load preference for timeEditEveryDay
+    QStringList query = Time.split(":");
+    int h=query[0].toInt();
+    int m=query[1].toInt();
+
+    QTime FilterTime;
+    FilterTime.setHMS(h,m,0);
+    ui->timeEditEveryDay->setTime(FilterTime);
+    #endif
+
+    QString tmpcmd= settings.value("everyDayCmd").toString();
+    if (tmpcmd=="halt") ui->cmbEverydayCmd->setCurrentIndex(0);
+    if (tmpcmd=="reboot") ui->cmbEverydayCmd->setCurrentIndex(1);
+    if (tmpcmd=="custom") ui->cmbEverydayCmd->setCurrentIndex(2);
+
+    if (settings.value("everyDayRunMinimized").toString()=="true") ui->checkBoxEverydayRunMinimized->setChecked(true);
+
+
+
 
     //System tray
     trayIcon = new QSystemTrayIcon(QIcon(":/icons/logout.png"));
     trayIcon->show();
     connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,
                 SLOT(toggleMainWindow()));
+
+
+
+    //Enable/disable everyDayMode
+    CheckIfEverydayMode();
+    on_checkBoxEnableEveryday_stateChanged();
 
 }
 
@@ -463,4 +500,216 @@ bool MainWindow::checkIfDirOk()
     if (listFilesDownloads.size()>0)ret=true;
     listFilesDownloads.clear();
     return ret;
+}
+
+
+bool MainWindow::checkIfTaskisInThePast()
+{
+    QTime nowTime= QTime::currentTime();
+
+    if ( nowTime.msecsTo(ui->timeEditEveryDay->time()) < 0 )
+    {
+        timerEveryday->stop();
+        ui->cmdEverydayDone->setEnabled(true);
+        ui->cmdEverydayStop->setEnabled(false);
+        return true;
+    }else{ return false; }
+}
+
+
+void MainWindow::on_cmdEverydayDone_clicked()
+{
+
+    LastWarningEveryday=true;
+
+    //Write configuration file
+    QSettings settings(settingsFile, QSettings::IniFormat);
+    if (ui->checkBoxEnableEveryday->isChecked())
+    {
+        settings.setValue("everyDayMode","on");
+        settings.setValue("everyDayTime",ui->timeEditEveryDay->text());
+        if (ui->cmbEverydayCmd->currentIndex()==0) settings.setValue("everyDayCmd","halt");
+        if (ui->cmbEverydayCmd->currentIndex()==1) settings.setValue("everyDayCmd","reboot");
+        if (ui->cmbEverydayCmd->currentIndex()==2) settings.setValue("everyDayCmd","custom");
+        if (ui->checkBoxEverydayRunMinimized->isChecked()) { settings.setValue("everyDayRunMinimized","true");}else{ settings.setValue("everyDayRunMinimized","false");}
+        CheckIfEverydayMode();
+        if (checkIfTaskisInThePast()==true)
+        {
+            trayIcon->showMessage ( tr("Warning"), tr("Task is in the past."));
+        }else{
+            if (!ui->checkBoxEverydayRunMinimized->isChecked())
+            { QMessageBox::information(0, tr("Information"), tr("Activities planned"), QMessageBox::Ok);
+            }else{ trayIcon->showMessage ( tr("Warning"), tr("Activities planned"));}
+        }
+
+
+
+
+        //Autostart in Linux Desktop
+        #ifdef Q_OS_LINUX
+        if (QDir(QDir::homePath()+"/.config/autostart").exists())
+        {
+            if (QFile::exists("/usr/share/applications/logout.desktop"))
+            {
+               QFile::copy("/usr/share/applications/logout.desktop", QDir::homePath()+"/.config/autostart/logout-fml.desktop");
+            }
+
+        }
+        #endif
+
+        //Autostart in Win32 Desktop
+        #ifdef Q_OS_WIN32
+        QSettings registry("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
+        registry.setValue("Logout-fml", QCoreApplication::applicationFilePath().replace('/','\\'));
+        #endif
+
+    }else{
+        settings.setValue("everyDayMode","off");
+        timerEveryday->stop();
+
+        //Remove autostart in Linux Desktop
+        #ifdef Q_OS_LINUX
+        //Remove .desktop file in autostart dir
+        if (QDir(QDir::homePath()+"/.config/autostart/logout.desktop").exists())
+        {
+            QFile::remove(QDir::homePath()+"/.config/autostart/logout.desktop");
+        }
+        #endif
+
+        //Remove Autostart in Win32 desktop
+        #ifdef Q_OS_WIN32
+        QSettings registry("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
+        registry.remove("Logout-fml");
+        #endif
+
+        QSettings settings(settingsFile, QSettings::IniFormat);
+        if (settings.value("everyDayMode").toString()=="off")
+                    QMessageBox::information(0, tr("Information"), tr("The task is not run automatically"), QMessageBox::Ok);
+
+
+
+
+
+    }
+
+}
+
+void MainWindow::CheckIfEverydayMode()
+{
+    QSettings settings(settingsFile, QSettings::IniFormat);
+    //enable timer for everyday tasks
+    timerEveryday = new QTimer(this);
+    connect(timerEveryday, SIGNAL(timeout()), this, SLOT(CheckEverydayTime()));
+
+
+    if (settings.value("everyDayMode").toString()=="on")
+    {
+        qDebug() << "Every day mode: ON";
+        if (settings.value("everyDayRunMinimized").toString()=="false") { this->show();}else this->hide();
+
+        if (!checkIfTaskisInThePast())
+        {
+            ui->cmdEverydayDone->setEnabled(false);
+            ui->cmdEverydayStop->setEnabled(true);
+            timerEveryday->start(1000);
+        }else{
+            timerEveryday->stop();
+            ui->cmdEverydayDone->setEnabled(true);
+            ui->cmdEverydayStop->setEnabled(false);
+        }
+
+    }else{
+        this->show();
+        timerEveryday->stop();
+        ui->cmdEverydayDone->setEnabled(true);
+        ui->cmdEverydayStop->setEnabled(false);
+    }
+
+}
+
+
+void MainWindow::CheckEverydayTime()
+{
+    QTime nowTime= QTime::currentTime();
+    QSettings settings(settingsFile, QSettings::IniFormat);
+    QString operation=settings.value("everyDayCmd").toString();
+
+    //Last warning - (300000 millisec/ 5 minutes)
+    if ( nowTime.msecsTo(ui->timeEditEveryDay->time())<=180000 && LastWarningEveryday==true )
+    {
+
+        CancelOperation=tr("If you do not want to click here and click cancels");
+        if (operation=="logout") WarningOperation=tr("Soon the computer will logout. Do you want that to happen?") ;
+        if (operation=="halt")  WarningOperation=tr("Soon the computer will shut down. Do you want that to happen?") ;
+        if (operation=="reboot")  WarningOperation=tr("Soon the computer will reboot. Do you want that to happen?") ;
+        if (operation=="custom")  WarningOperation=tr("Soon the computer will execute a task. Do you want that to happen?") ;
+
+        trayIcon->showMessage ( tr("Information"), WarningOperation+CancelOperation,QSystemTrayIcon::Warning);
+        LastWarningEveryday=false;
+
+        QTimer::singleShot(1, this, SLOT(LastWarningMsgbox()));
+    }
+
+
+    //Finally perform the task
+    if ( nowTime.msecsTo(ui->timeEditEveryDay->time())<=1000 )
+    {
+        qDebug() << "It is time to... ";
+        if (operation=="logout") this->logout();
+        if (operation=="halt") this->halt();
+        if (operation=="reboot") this->reboot();
+        if (operation=="custom") QProcess::execute (ui->txtCustom->text());
+        timerEveryday->stop();
+        ui->cmdEverydayDone->setEnabled(true);
+        ui->cmdEverydayStop->setEnabled(false);
+    }
+
+}
+
+void MainWindow::LastWarningMsgbox()
+{
+    this->show();
+
+    /* I wont to be don't blocking*/
+    QMessageBox msgBox;
+    msgBox.setWindowTitle(tr("Warning"));
+    msgBox.setText(WarningOperation);
+    msgBox.setIcon ( QMessageBox::Warning );
+    msgBox.setStandardButtons(QMessageBox::Yes| QMessageBox::No);
+    msgBox.setButtonText(QMessageBox::Yes, tr("Yes"));
+    msgBox.setButtonText(QMessageBox::No, tr("No"));
+    msgBox.setModal( false );
+    msgBox.setWindowModality(Qt::NonModal);
+
+    if(msgBox.exec() == QMessageBox::No)
+    {
+      timerEveryday->stop();
+      ui->cmdEverydayDone->setEnabled(true);
+      ui->cmdEverydayStop->setEnabled(false);
+    }
+
+    this->hide();
+}
+
+void MainWindow::on_cmdEverydayStop_clicked()
+{
+    timerEveryday->stop();
+    ui->cmdEverydayDone->setEnabled(true);
+    ui->cmdEverydayStop->setEnabled(false);
+    trayIcon->showMessage ( tr("Information"), tr("All scheduled tasks from this tab have been canceled."),QSystemTrayIcon::Warning);
+
+}
+
+void MainWindow::on_checkBoxEnableEveryday_stateChanged()
+{
+    if (ui->checkBoxEnableEveryday->isChecked())
+    {
+        ui->timeEditEveryDay->setEnabled(true);
+        ui->cmbEverydayCmd->setEnabled(true);
+        ui->checkBoxEverydayRunMinimized->setEnabled(true);
+    }else{
+        ui->timeEditEveryDay->setEnabled(false);
+        ui->cmbEverydayCmd->setEnabled(false);
+        ui->checkBoxEverydayRunMinimized->setEnabled(false);
+    }
 }

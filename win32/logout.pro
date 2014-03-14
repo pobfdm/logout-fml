@@ -20,4 +20,7 @@ win32 {
 
 	RESOURCES += \
 		../logout/resource.qrc
+		
+	#Icon win32
+	RC_FILE = resource-win32.rc
 }
