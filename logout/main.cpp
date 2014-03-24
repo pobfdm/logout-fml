@@ -8,14 +8,14 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setQuitOnLastWindowClosed(false);
 
-
-    //Prelevo la "locale" (ex: it_IT)
+    //Get system "locale" (ex: it_IT)
     QString locale = QLocale::system().name();
     qDebug() << "Locale:" << locale;
 
 
-    //Carico la traduzione in base alla locale
+    //Load traslation
     QTranslator* translator = new QTranslator();
 
     //Si deve caricare il file della traduzione italiana 'logout-it_it.qm'

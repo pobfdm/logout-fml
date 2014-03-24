@@ -11,7 +11,6 @@
 #include <QStringList>
 
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -98,14 +97,23 @@ MainWindow::MainWindow(QWidget *parent) :
     //System tray
     trayIcon = new QSystemTrayIcon(QIcon(":/icons/logout.png"));
     trayIcon->show();
-    connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,
-                SLOT(toggleMainWindow()));
+    connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),this,SLOT(toggleMainWindow()));
 
 
 
     //Enable/disable everyDayMode
     CheckIfEverydayMode();
     on_checkBoxEnableEveryday_stateChanged();
+
+    //Server
+    server = new QTcpServer(this);
+    connect(server, SIGNAL(newConnection()),this, SLOT(newConnection()) );
+    checkIfServerAtStartup();
+    if (settings.value("enableServerAtStartup").toString()=="true") hide();
+
+
+
+
 
 }
 
@@ -114,12 +122,17 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+
 void MainWindow::toggleMainWindow()
 {
     if (this->isVisible())
-    {  this->hide();
-        trayIcon->showMessage ( tr("Information"), tr("I stay minimized here"));
-    }else this->show();
+    {
+        this->hide();
+        //trayIcon->showMessage ( tr("Information"), tr("I stay minimized here"));
+    }else{
+        this->show();
+    }
 }
 
 void MainWindow::on_cmdCancel_clicked()
@@ -542,53 +555,17 @@ void MainWindow::on_cmdEverydayDone_clicked()
             }else{ trayIcon->showMessage ( tr("Warning"), tr("Activities planned"));}
         }
 
-
-
-
-        //Autostart in Linux Desktop
-        #ifdef Q_OS_LINUX
-        if (QDir(QDir::homePath()+"/.config/autostart").exists())
-        {
-            if (QFile::exists("/usr/share/applications/logout.desktop"))
-            {
-               QFile::copy("/usr/share/applications/logout.desktop", QDir::homePath()+"/.config/autostart/logout-fml.desktop");
-            }
-
-        }
-        #endif
-
-        //Autostart in Win32 Desktop
-        #ifdef Q_OS_WIN32
-        QSettings registry("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
-        registry.setValue("Logout-fml", QCoreApplication::applicationFilePath().replace('/','\\'));
-        #endif
+        setAutostart();
 
     }else{
         settings.setValue("everyDayMode","off");
         timerEveryday->stop();
 
-        //Remove autostart in Linux Desktop
-        #ifdef Q_OS_LINUX
-        //Remove .desktop file in autostart dir
-        if (QDir(QDir::homePath()+"/.config/autostart/logout.desktop").exists())
-        {
-            QFile::remove(QDir::homePath()+"/.config/autostart/logout.desktop");
-        }
-        #endif
-
-        //Remove Autostart in Win32 desktop
-        #ifdef Q_OS_WIN32
-        QSettings registry("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
-        registry.remove("Logout-fml");
-        #endif
+        unsetAutostart();
 
         QSettings settings(settingsFile, QSettings::IniFormat);
         if (settings.value("everyDayMode").toString()=="off")
                     QMessageBox::information(0, tr("Information"), tr("The task is not run automatically"), QMessageBox::Ok);
-
-
-
-
 
     }
 
@@ -713,3 +690,209 @@ void MainWindow::on_checkBoxEnableEveryday_stateChanged()
         ui->checkBoxEverydayRunMinimized->setEnabled(false);
     }
 }
+
+void MainWindow::setAutostart()
+{
+    //Autostart in Linux Desktop
+    #ifdef Q_OS_LINUX
+    if (QDir(QDir::homePath()+"/.config/autostart").exists())
+    {
+        if (QFile::exists("/usr/share/applications/logout.desktop"))
+        {
+           QFile::copy("/usr/share/applications/logout.desktop", QDir::homePath()+"/.config/autostart/logout-fml.desktop");
+        }
+
+    }
+    #endif
+
+    //Autostart in Win32 Desktop
+    #ifdef Q_OS_WIN32
+    QSettings registry("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
+    registry.setValue("Logout-fml", QCoreApplication::applicationFilePath().replace('/','\\'));
+    #endif
+}
+
+void MainWindow::unsetAutostart()
+{
+    //Remove autostart in Linux Desktop
+    #ifdef Q_OS_LINUX
+    //Remove .desktop file in autostart dir
+    if (QDir(QDir::homePath()+"/.config/autostart/logout.desktop").exists())
+    {
+        QFile::remove(QDir::homePath()+"/.config/autostart/logout.desktop");
+    }
+    #endif
+
+    //Remove Autostart in Win32 desktop
+    #ifdef Q_OS_WIN32
+    QSettings registry("HKEY_CURRENT_USER\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
+    registry.remove("Logout-fml");
+    #endif
+
+}
+
+void MainWindow::on_cmdServerStartStop_clicked()
+{
+     if(!ui->txtServerPassword->text().contains(":"))
+     {
+        QSettings settings(settingsFile, QSettings::IniFormat);
+        if (ui->checkBoxEnableServerStartup->isChecked())
+        {
+            settings.setValue("enableServerAtStartup","true");
+            setAutostart();
+        }else{
+            settings.setValue("enableServerAtStartup","false");
+            unsetAutostart();
+        }
+
+        settings.setValue("ServerPassword",ui->txtServerPassword->text());
+        settings.setValue("ServerPort",ui->txtServerPort->text());
+
+        serverStart();
+      }else{
+         QMessageBox::warning(0, tr("Warning"), tr("The password can not 'contain the character ':'"), QMessageBox::Ok);
+     }
+}
+
+void MainWindow::checkIfServerAtStartup()
+{
+    QSettings settings(settingsFile, QSettings::IniFormat);
+
+    ui->txtServerPassword->setText(settings.value("ServerPassword").toString());
+    ui->txtServerPort->setText(settings.value("ServerPort").toString());
+
+    if (settings.value("enableServerAtStartup").toString()=="true")
+    {
+        ui->checkBoxEnableServerStartup->setChecked(true);
+        //toggleMainWindow();
+        serverStart();
+    }
+
+    if (server!=NULL && server->isListening())
+    {
+        ui->cmdServerStartStop->setText("Stop");
+        ui->txtServerPassword->setEnabled(false);
+        ui->txtServerPort->setEnabled(false);
+    }else{
+        ui->cmdServerStartStop->setText("Start");
+        ui->txtServerPassword->setEnabled(true);
+        ui->txtServerPort->setEnabled(true);
+    }
+
+}
+
+void MainWindow::serverStart()
+{
+
+    if (!server->isListening())
+    {
+        if (!server->listen(QHostAddress::Any, ui->txtServerPort->text().toInt())) //mette in ascolto il server sulla porta 1234 se possibile
+        {
+            qDebug()<< "the server can not 'start";
+            ui->cmdServerStartStop->setText("Start");
+            ui->txtServerPassword->setEnabled(true);
+            ui->txtServerPort->setEnabled(true);
+            QMessageBox::critical(0, tr("Waring"), tr("It was not possible to start the server.\n"), QMessageBox::Ok);
+
+        }else{
+            qDebug()<< "Server started.";
+            ui->cmdServerStartStop->setText("Stop");
+            ui->txtServerPassword->setEnabled(false);
+            ui->txtServerPort->setEnabled(false);
+            trayIcon->showMessage ( tr("Information"), tr("Server started."),QSystemTrayIcon::Information);
+        }
+    }else{
+        server->close();
+        qDebug()<< "Server stopped.";
+        ui->cmdServerStartStop->setText("Start");
+        ui->txtServerPassword->setEnabled(true);
+        ui->txtServerPort->setEnabled(true);
+        trayIcon->showMessage ( tr("Information"), tr("Server stopped."),QSystemTrayIcon::Information);
+    }
+}
+
+void MainWindow::newConnection()
+{
+    /*The server accept only one packet width this structure
+     *
+     *          password:command:message
+    */
+
+    socket= server->nextPendingConnection();
+    QByteArray mykeypass;
+
+    if (socket->waitForReadyRead(3000))
+    {
+        //Read
+        mykeypass=  socket->readAll();
+        socket->flush();
+    }
+
+    QString recv(mykeypass);
+
+    if (recv.contains(":"))
+    {
+        qDebug()<<"mykeypass->"<<mykeypass;
+        QStringList packet=recv.split(':');
+
+
+        QString Password=packet[0];
+        QString Command=packet[1];
+        QString Message;
+        if (packet.count()==3) Message=packet[2];
+
+
+        qDebug()<< "Packet->"<<recv;
+        qDebug()<< "Password->"<<Password;
+        qDebug()<< "Command->"<<Command;
+        qDebug()<< "Message->"<<Message;
+
+
+
+        if (Password==ui->txtServerPassword->text())
+        {
+
+            qDebug()<<"Login [OK]...";
+
+            //Send
+            socket->write("GOOD-PASSWORD");
+            socket->flush();
+            if (Message!="")
+            {
+                trayIcon->showMessage ( tr("Remote message:"), Message,QSystemTrayIcon::Information);
+                QMessageBox::information(0, tr("Remote message"), Message, QMessageBox::Ok);
+            }
+            RunServerCmd(Command.simplified());
+        }else{
+            //Wrog password
+            socket->write("BAD-PASSWORD");
+            socket->flush();
+            trayIcon->showMessage ( tr("Information"), tr("Client send a wrong password"),QSystemTrayIcon::Warning);
+        }
+   }else{
+        //Bad packet
+        socket->write("BAD-FORMAT");
+        socket->flush();
+        trayIcon->showMessage ( tr("Information"), tr("Client send a wrong packet's' format"),QSystemTrayIcon::Warning);
+   }
+
+   socket->disconnectFromHost();
+
+}
+
+
+void MainWindow::RunServerCmd(QString cmd)
+{
+
+    if (cmd=="halt") this->halt();
+    if (cmd=="reboot") this->reboot();
+    if (cmd=="logout") this->logout();
+    if (cmd=="custom")
+    {
+        QProcess::execute (ui->txtCustom->text());
+        trayIcon->showMessage ( tr("Information"), tr("Remote command executed."),QSystemTrayIcon::Information);
+    }
+
+}
+
+

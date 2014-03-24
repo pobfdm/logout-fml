@@ -65,6 +65,13 @@ public:
     QPushButton *cmdEverydayDone;
     QCheckBox *checkBoxEverydayRunMinimized;
     QPushButton *cmdEverydayStop;
+    QWidget *tabServer;
+    QCheckBox *checkBoxEnableServerStartup;
+    QLineEdit *txtServerPassword;
+    QLineEdit *txtServerPort;
+    QLabel *label;
+    QLabel *label_2;
+    QPushButton *cmdServerStartStop;
     QPushButton *cmdCancel;
     QMenuBar *menuBar;
     QMenu *menuInfo;
@@ -73,6 +80,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
+        MainWindow->setEnabled(true);
         MainWindow->resize(450, 350);
         MainWindow->setMinimumSize(QSize(450, 350));
         MainWindow->setMaximumSize(QSize(450, 350));
@@ -184,6 +192,27 @@ public:
         cmdEverydayStop->setEnabled(false);
         cmdEverydayStop->setGeometry(QRect(100, 150, 85, 27));
         tabWidget->addTab(tabEveryday, QString());
+        tabServer = new QWidget();
+        tabServer->setObjectName(QString::fromUtf8("tabServer"));
+        checkBoxEnableServerStartup = new QCheckBox(tabServer);
+        checkBoxEnableServerStartup->setObjectName(QString::fromUtf8("checkBoxEnableServerStartup"));
+        checkBoxEnableServerStartup->setGeometry(QRect(80, 30, 241, 19));
+        txtServerPassword = new QLineEdit(tabServer);
+        txtServerPassword->setObjectName(QString::fromUtf8("txtServerPassword"));
+        txtServerPassword->setGeometry(QRect(80, 90, 113, 20));
+        txtServerPort = new QLineEdit(tabServer);
+        txtServerPort->setObjectName(QString::fromUtf8("txtServerPort"));
+        txtServerPort->setGeometry(QRect(210, 90, 41, 20));
+        label = new QLabel(tabServer);
+        label->setObjectName(QString::fromUtf8("label"));
+        label->setGeometry(QRect(80, 70, 61, 14));
+        label_2 = new QLabel(tabServer);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
+        label_2->setGeometry(QRect(210, 70, 61, 14));
+        cmdServerStartStop = new QPushButton(tabServer);
+        cmdServerStartStop->setObjectName(QString::fromUtf8("cmdServerStartStop"));
+        cmdServerStartStop->setGeometry(QRect(130, 140, 85, 27));
+        tabWidget->addTab(tabServer, QString());
         cmdCancel = new QPushButton(centralWidget);
         cmdCancel->setObjectName(QString::fromUtf8("cmdCancel"));
         cmdCancel->setGeometry(QRect(320, 290, 101, 27));
@@ -201,7 +230,7 @@ public:
         retranslateUi(MainWindow);
         QObject::connect(MainWindow, SIGNAL(timeout()), MainWindow, SLOT(checkMyDate()));
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(3);
         cmbEverydayCmd->setCurrentIndex(0);
 
 
@@ -253,7 +282,13 @@ public:
         checkBoxEverydayRunMinimized->setText(QApplication::translate("MainWindow", "Hide main window", 0, QApplication::UnicodeUTF8));
         cmdEverydayStop->setText(QApplication::translate("MainWindow", "Stop", 0, QApplication::UnicodeUTF8));
         tabWidget->setTabText(tabWidget->indexOf(tabEveryday), QApplication::translate("MainWindow", "Everyday", 0, QApplication::UnicodeUTF8));
-        cmdCancel->setText(QApplication::translate("MainWindow", "Cancel", 0, QApplication::UnicodeUTF8));
+        checkBoxEnableServerStartup->setText(QApplication::translate("MainWindow", "Enable Server at startup", 0, QApplication::UnicodeUTF8));
+        txtServerPort->setText(QApplication::translate("MainWindow", "1234", 0, QApplication::UnicodeUTF8));
+        label->setText(QApplication::translate("MainWindow", "Password", 0, QApplication::UnicodeUTF8));
+        label_2->setText(QApplication::translate("MainWindow", "Port", 0, QApplication::UnicodeUTF8));
+        cmdServerStartStop->setText(QApplication::translate("MainWindow", "Start", 0, QApplication::UnicodeUTF8));
+        tabWidget->setTabText(tabWidget->indexOf(tabServer), QApplication::translate("MainWindow", "Server", 0, QApplication::UnicodeUTF8));
+        cmdCancel->setText(QApplication::translate("MainWindow", "Quit", 0, QApplication::UnicodeUTF8));
         menuInfo->setTitle(QApplication::translate("MainWindow", "Info", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 

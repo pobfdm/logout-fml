@@ -22,7 +22,7 @@ static const uint qt_meta_data_MainWindow[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      28,   14, // methods
+      35,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -58,6 +58,13 @@ static const uint qt_meta_data_MainWindow[] = {
      585,   11,   11,   11, 0x08,
      614,   11,  449,   11, 0x08,
      639,   11,   11,   11, 0x08,
+     680,   11,   11,   11, 0x08,
+     712,   11,   11,   11, 0x08,
+     737,   11,   11,   11, 0x08,
+     753,   11,   11,   11, 0x08,
+     771,  767,   11,   11, 0x08,
+     793,   11,   11,   11, 0x08,
+     808,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -82,6 +89,10 @@ static const char qt_meta_stringdata_MainWindow[] = {
     "LastWarningMsgbox()\0on_cmdEverydayStop_clicked()\0"
     "checkIfTaskisInThePast()\0"
     "on_checkBoxEnableEveryday_stateChanged()\0"
+    "on_cmdServerStartStop_clicked()\0"
+    "checkIfServerAtStartup()\0newConnection()\0"
+    "serverStart()\0cmd\0RunServerCmd(QString)\0"
+    "setAutostart()\0unsetAutostart()\0"
 };
 
 void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -120,6 +131,13 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 26: { bool _r = _t->checkIfTaskisInThePast();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 27: _t->on_checkBoxEnableEveryday_stateChanged(); break;
+        case 28: _t->on_cmdServerStartStop_clicked(); break;
+        case 29: _t->checkIfServerAtStartup(); break;
+        case 30: _t->newConnection(); break;
+        case 31: _t->serverStart(); break;
+        case 32: _t->RunServerCmd((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 33: _t->setAutostart(); break;
+        case 34: _t->unsetAutostart(); break;
         default: ;
         }
     }
@@ -157,9 +175,9 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 28)
+        if (_id < 35)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 28;
+        _id -= 35;
     }
     return _id;
 }

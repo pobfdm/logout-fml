@@ -11,6 +11,10 @@
 #include <QSystemTrayIcon>
 #include <QFileInfo>
 
+#include <QTcpServer>
+#include <QTcpSocket>
+#include <QThread>
+
 namespace Ui {
 class MainWindow;
 }
@@ -79,6 +83,17 @@ private slots:
 
     void on_checkBoxEnableEveryday_stateChanged();
 
+    void on_cmdServerStartStop_clicked();
+    void checkIfServerAtStartup();
+
+    void newConnection();
+    void serverStart();
+    void RunServerCmd(QString cmd);
+    void setAutostart();
+    void unsetAutostart();
+
+
+
 private:
     QString operation, settingsFile,WarningOperation, CancelOperation;
     QTimer *timer, *timerDownload, *timerEveryday ;
@@ -86,7 +101,10 @@ private:
     QSystemTrayIcon *trayIcon ;
     QFileInfoList listFilesDownloads;
     bool LastWarningEveryday;
+    QTcpServer *server;
+    QTcpSocket *socket;
 
 };
 
 #endif // MAINWINDOW_H
+
