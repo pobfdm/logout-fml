@@ -1,7 +1,7 @@
 
 ![Logo] (share/logout/logout.png)
 # Logout-fml #
-Logout-fml is a simple utility to perform scheduled tasks.
+Logout-fml is a simple utility to perform scheduled tasks. It runs on Gnu/Linux and Windows
 
 [**Download**](http://www.freemedialab.org/listing/logout-fml/)
 
