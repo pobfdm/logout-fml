@@ -31,6 +31,7 @@ Windows users can find the executable in the folder win32/bin/logout.exe
 
 -Shutdown and reboot on Unix with sudo without password:
 You can add add your user to adm group and then add these lines to your /etc/sudoers :
+
 	%adm	ALL= NOPASSWD: /sbin/halt
 	%adm	ALL= NOPASSWD: /sbin/reboot
 
