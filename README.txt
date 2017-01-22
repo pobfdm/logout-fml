@@ -1,5 +1,6 @@
+Logout-fml
 
-/* LOGOUT by Fabio Di Matteo - fadimatteo@gmail.com - www.freemedialab.org
+/* LOGOUT-fml by Fabio Di Matteo - fadimatteo@gmail.com - www.freemedialab.org
  *
  *
  * This program is free software; you can redistribute it and/or modify
